@@ -1,4 +1,5 @@
 # ARCON – REST API for RCON Servers 🏴‍☠️
+<img style="background:white; padding: 30px;max-height:250px" src="logo.svg">
 
 **ARCON** _(pronounced ARRR-con, like a pirate growling “RCON”)_ is an elegant and lightweight REST API built to interface with the **RCON protocol** used by dedicated game servers. Designed with simplicity, flexibility, and open-source principles in mind, ARCON lets you securely interact with RCON-enabled servers over HTTP.
 
