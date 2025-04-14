@@ -1,0 +1,22 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Bundle API",
+            "type": "shell",
+            "command": "bundleapi",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "options": {
+                "env": {
+                    "API_VERSION": "local-dev" ,
+                    "STATIC_HTML_DOCS": "1",
+                    "JINJA2_CONVERT": "true",
+                    "OPEN_AFTER_BUILD": "false"
+                }
+            }
+        }
+    ]
+}

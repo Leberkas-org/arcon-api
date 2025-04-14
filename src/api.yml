@@ -1,0 +1,51 @@
+openapi: 3.1.1
+info:
+  title: ARCON
+  description: |-
+    This is an API to interact with RCON servers.
+  contact:
+    email: arcon@leberkas.org
+  version: "1.0"
+servers:
+  - url: https://arcon.leberkas.org/api/v1
+tags:
+  - name: raw
+    description: Raw requests to specified server, without any session handling
+paths:
+  /rcon/exec:
+    post:
+      tags:
+        - raw
+      summary: Execute a command
+      operationId: execRcon
+      requestBody:
+        description: your plain text RCON command
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+            example: ListPlayers
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            text/plain:
+              schema:
+                type: string
+        '204':
+          description: No content - Successful operation
+        '401':
+          description: Unauthorized
+        '403':
+          description: Bad request - Command invalid
+components:
+  securitySchemes:
+    arcon_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://auth.leberkas.org/oauth/authorize
+          scopes:
+            "write:arcon_command": executes rcon commands
+            "write:arcon_sessions": manage rcon sessions
