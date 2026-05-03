@@ -11,5 +11,6 @@ WORKDIR /api
 COPY scripts/ scripts/
 
 ENV STATIC_HTML_DOCS=1
+ENV API_VERSION=local-dev
 
 CMD ["bash", "scripts/build.sh"]

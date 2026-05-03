@@ -1,5 +1,6 @@
 param(
-    [switch]$Build
+    [switch]$Build,
+    [string]$Version
 )
 
 $ErrorActionPreference = "Stop"
@@ -12,4 +13,12 @@ if ($Build -or -not $imageExists) {
     docker build -t arcon-api-build $root
 }
 
-docker run --rm -v "${root}/src:/api/src" -v "${root}/build:/api/build" arcon-api-build
+$runArgs = @("run", "--rm", "-v", "${root}/src:/api/src", "-v", "${root}/build:/api/build")
+
+if ($Version) {
+    $runArgs += @("-e", "API_VERSION=$Version")
+}
+
+$runArgs += "arcon-api-build"
+
+docker @runArgs

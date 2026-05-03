@@ -10,6 +10,9 @@
       "ghcr.io/devcontainers/features/python:1": {}
     },
   
+    "containerEnv": {
+      "API_VERSION": "local-dev"
+    },
     "postCreateCommand": "bash -i scripts/post-create.sh",
     
     // Use 'forwardPorts' to make a list of ports inside the container available locally.

@@ -15,7 +15,7 @@ info:
     Tenant-scoped endpoints additionally require the `X-Tenant-Id` header.
   contact:
     email: arcon@leberkas.org
-  version: "2.0"
+  version: "{{ API_VERSION }}"
 servers:
   - url: https://arcon.leberkas.org/api/v2
   - url: api/v2

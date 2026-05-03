@@ -1,0 +1,36 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Determine version
+        id: version
+        run: |
+          base_version=$(cat VERSION | tr -d '[:space:]')
+          echo "version=${base_version}-build.${{ github.run_number }}" >> $GITHUB_OUTPUT
+
+      - name: Build OpenAPI spec
+        run: |
+          docker build -t arcon-api-build .
+          docker run --rm \
+            -e API_VERSION=${{ steps.version.outputs.version }} \
+            -v ${{ github.workspace }}/src:/api/src \
+            -v ${{ github.workspace }}/build:/api/build \
+            arcon-api-build
+
+      - name: Upload bundled spec
+        uses: actions/upload-artifact@v4
+        with:
+          name: openapi-spec
+          path: |
+            build/openapi.yml
+            build/api_doc.html

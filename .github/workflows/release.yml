@@ -1,0 +1,43 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate tag matches VERSION file
+        id: version
+        run: |
+          base_version=$(cat VERSION | tr -d '[:space:]')
+          tag_version="${GITHUB_REF#refs/tags/v}"
+          echo "version=$base_version" >> $GITHUB_OUTPUT
+          if [ "$base_version" != "$tag_version" ]; then
+            echo "::error::Tag version ($tag_version) does not match VERSION file ($base_version)"
+            exit 1
+          fi
+
+      - name: Build OpenAPI spec
+        run: |
+          docker build -t arcon-api-build .
+          docker run --rm \
+            -e API_VERSION=${{ steps.version.outputs.version }} \
+            -v ${{ github.workspace }}/src:/api/src \
+            -v ${{ github.workspace }}/build:/api/build \
+            arcon-api-build
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ARCON API v${{ steps.version.outputs.version }}
+          generate_release_notes: true
+          files: |
+            build/openapi.yml
+            build/api_doc.html

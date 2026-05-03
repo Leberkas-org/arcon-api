@@ -1,18 +1,21 @@
 #!/bin/bash
 cd $( cd "$(dirname "$(realpath "${BASH_SOURCE[0]}")")" ; pwd -P )/..
 
-# create schema index file :)
+# ==================== Set API version ====================
+export API_VERSION="${API_VERSION:-local-dev}"
+echo "========== API Version: $API_VERSION =========="
 
+# ==================== Generate schema index ====================
 echo "========== Generating schema index yml =========="
 
 for file in src/schemas/*.yml
 do
     file=${file##*/}
     if [[ "$file" != "index.yml" && "$file" != "*.yml" ]]; then
-    
+
         name="${file::-4}"
         echo "    -> $name";
-        result+="{"\"Name\"": "\"${name}\""},"
+        result+="{\"Name\": \"${name}\"},"
     fi
 done
 
@@ -25,28 +28,16 @@ else
     rm -f src/schemas/index.yml
 fi
 
-# bundle multi file api spec to single file
+# ==================== Bundle ====================
+mkdir -p build
 redocly bundle -o build/openapi.yml --ext yml src/api.yml
 
-if [[ -n "$JINJA2_CONVERT" ]]; then
-    # run jinja2 template
-    echo "Converting Jinja2 tepmlate..."
-    mv build/openapi.yml build/openapi.yml.tpl;
-    envtpl build/openapi.yml.tpl;
-    echo "Done."
-fi
+# ==================== Resolve version placeholder ====================
+cp build/openapi.yml build/openapi.yml.tpl
+envtpl build/openapi.yml.tpl
 
-
-#set api version if not set
-
-if [[ -n "$STATIC_HTML_DOCS" ]]; 
-    then redocly build-docs -o build/api_doc.html build/openapi.yml; 
+if [[ -n "$STATIC_HTML_DOCS" ]];
+    then redocly build-docs -o build/api_doc.html build/openapi.yml;
 fi
 
 redocly stats build/openapi.yml
-
-#set api version if not set
-if [[ -n "$OPEN_AFTER_BUILD" && "$OPEN_AFTER_BUILD" != "false" ]]; then
-    echo "Open openapi.yml...."
-    code -r build/openapi.yml; 
-fi
