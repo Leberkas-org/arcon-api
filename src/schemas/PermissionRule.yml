@@ -1,0 +1,22 @@
+type: object
+required:
+  - commandPattern
+  - allow
+properties:
+  commandPattern:
+    type: string
+    description: |
+      Command name or wildcard pattern. Supports:
+      - Exact match: `kick`
+      - Category wildcard: `players.*`
+      - Full wildcard: `*`
+    example: "players.*"
+  allow:
+    type: boolean
+    description: Whether commands matching this pattern are allowed or denied
+    example: true
+  catalog:
+    type: string
+    nullable: true
+    description: Scope this rule to a specific command catalog. Omit to apply regardless of catalog.
+    example: "/catalogs/project-zomboid"

@@ -1,0 +1,27 @@
+type: object
+required:
+  - id
+  - name
+  - ownerId
+  - createdAt
+  - updatedAt
+properties:
+  id:
+    type: string
+    format: uuid
+  name:
+    type: string
+    example: "Leberkas Gaming"
+  description:
+    type: string
+    example: "Our gaming community servers"
+  ownerId:
+    type: string
+    format: uuid
+    description: User ID of the tenant owner
+  createdAt:
+    type: string
+    format: date-time
+  updatedAt:
+    type: string
+    format: date-time

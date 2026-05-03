@@ -1,0 +1,58 @@
+type: object
+required:
+  - id
+  - name
+  - hostname
+  - port
+  - commandCatalog
+  - createdAt
+  - updatedAt
+properties:
+  id:
+    type: string
+    format: uuid
+  name:
+    type: string
+    example: "PZ EU #1"
+  description:
+    type: string
+  hostname:
+    type: string
+    example: "rcon.example.org"
+  port:
+    type: integer
+    example: 27020
+  commandCatalog:
+    type: string
+    nullable: true
+    description: |
+      Reference to a command catalog. Can be:
+      - Global catalog path: `/catalogs/project-zomboid`
+      - Tenant catalog path: `/tenants/{tenantId}/catalogs/my-custom-game`
+      - External URL: `https://commands.arcon.leberkas.org/ark-se/v1`
+      Null if no catalog is assigned.
+    example: "/catalogs/project-zomboid"
+  tags:
+    type: array
+    items:
+      type: string
+    example: ["eu", "modded", "pve"]
+  icon:
+    type: string
+    nullable: true
+    description: URL or identifier for UI display
+  color:
+    type: string
+    nullable: true
+    description: Hex color code for UI display
+    example: "#4CAF50"
+  connectionTimeout:
+    type: integer
+    nullable: true
+    description: Connection timeout in milliseconds. Service provides default if omitted.
+  createdAt:
+    type: string
+    format: date-time
+  updatedAt:
+    type: string
+    format: date-time

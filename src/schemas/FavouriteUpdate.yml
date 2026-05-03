@@ -1,0 +1,14 @@
+type: object
+properties:
+  name:
+    type: string
+  command:
+    type: string
+  args:
+    type: array
+    items:
+      type: string
+  shares:
+    type: array
+    items:
+      $ref: "index.yml#/ShareEntry"

@@ -1,0 +1,22 @@
+type: object
+required:
+  - type
+properties:
+  type:
+    type: string
+    enum:
+      - user
+      - role
+      - server
+      - tenant
+    description: |
+      Scope of the share:
+      - `user`: shared with a specific user (targetId = userId)
+      - `role`: shared with users who have a specific role (targetId = roleId)
+      - `server`: shared with all users who have access to this server
+      - `tenant`: shared with all tenant members
+  targetId:
+    type: string
+    format: uuid
+    nullable: true
+    description: userId for type=user, roleId for type=role, null for server/tenant

@@ -1,0 +1,55 @@
+post:
+  tags:
+    - execution
+  summary: Execute a command
+  description: |
+    Execute an RCON command on a managed server. Requires command permission.
+    The command and args are validated against the server's command catalog if available.
+  operationId: executeCommand
+  security:
+    - bearer_auth: []
+  parameters:
+    - $ref: "../api.yml#/components/parameters/TenantId"
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../schemas/index.yml#/CommandRequest"
+  responses:
+    '200':
+      description: Command executed
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/CommandResponse"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: No permission to execute this command on this server
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '404':
+      description: Server not found
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '502':
+      description: Failed to connect to the RCON server
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"

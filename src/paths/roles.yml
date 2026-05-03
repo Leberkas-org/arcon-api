@@ -1,0 +1,66 @@
+get:
+  tags:
+    - roles
+  summary: List roles
+  description: List all roles in the tenant.
+  operationId: listRoles
+  security:
+    - bearer_auth: []
+  parameters:
+    - $ref: "../api.yml#/components/parameters/TenantId"
+  responses:
+    '200':
+      description: List of roles
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../schemas/index.yml#/Role"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Not a member of this tenant
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+post:
+  tags:
+    - roles
+  summary: Create a role
+  description: Create a new role with command permissions. Admin or owner only.
+  operationId: createRole
+  security:
+    - bearer_auth: []
+  parameters:
+    - $ref: "../api.yml#/components/parameters/TenantId"
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../schemas/index.yml#/RoleCreate"
+  responses:
+    '201':
+      description: Role created
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Role"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"

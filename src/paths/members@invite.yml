@@ -1,0 +1,35 @@
+post:
+  tags:
+    - members
+  summary: Create invite
+  description: Create an invite link for the tenant. Admin or owner only.
+  operationId: createInvite
+  security:
+    - bearer_auth: []
+  parameters:
+    - $ref: "../api.yml#/components/parameters/TenantId"
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../schemas/index.yml#/InviteCreate"
+  responses:
+    '201':
+      description: Invite created
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Invite"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"

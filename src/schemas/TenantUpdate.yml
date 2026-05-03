@@ -1,0 +1,12 @@
+type: object
+properties:
+  name:
+    type: string
+    example: "Leberkas Gaming"
+  description:
+    type: string
+    example: "Our gaming community servers"
+  ownerId:
+    type: string
+    format: uuid
+    description: Transfer ownership to another user (current owner only)

@@ -1,0 +1,36 @@
+delete:
+  tags:
+    - members
+  summary: Revoke invite
+  description: Revoke a pending invite. Admin or owner only.
+  operationId: revokeInvite
+  security:
+    - bearer_auth: []
+  parameters:
+    - $ref: "../api.yml#/components/parameters/TenantId"
+    - name: code
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    '204':
+      description: Invite revoked
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '404':
+      description: Invite not found
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"

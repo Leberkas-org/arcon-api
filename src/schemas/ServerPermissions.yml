@@ -1,0 +1,15 @@
+type: object
+required:
+  - roleAssignments
+  - userOverrides
+properties:
+  roleAssignments:
+    type: array
+    items:
+      $ref: "index.yml#/RoleAssignment"
+    description: Which users are assigned which roles on this server
+  userOverrides:
+    type: array
+    items:
+      $ref: "index.yml#/UserOverride"
+    description: Per-user permission overrides that take precedence over role permissions

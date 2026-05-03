@@ -1,0 +1,48 @@
+type: object
+required:
+  - slug
+  - name
+  - status
+  - createdAt
+  - updatedAt
+properties:
+  slug:
+    type: string
+    description: Unique identifier for the catalog, used in URLs
+    example: "project-zomboid"
+  name:
+    type: string
+    example: "Project Zomboid"
+  description:
+    type: string
+    example: "Admin commands for Project Zomboid dedicated servers"
+  tenantId:
+    type: string
+    format: uuid
+    nullable: true
+    description: Null for global catalogs, set for tenant-scoped catalogs
+  status:
+    type: string
+    enum:
+      - pending
+      - validating
+      - valid
+      - invalid
+    description: |
+      Processing status of the catalog:
+      - `pending`: Upload received, waiting for validation
+      - `validating`: Validation in progress
+      - `valid`: Catalog validated and ready for use
+      - `invalid`: Validation failed, see validationErrors
+  validationErrors:
+    type: array
+    nullable: true
+    items:
+      $ref: "index.yml#/CatalogValidationError"
+    description: Present when status is `invalid`. Lists all validation errors found.
+  createdAt:
+    type: string
+    format: date-time
+  updatedAt:
+    type: string
+    format: date-time

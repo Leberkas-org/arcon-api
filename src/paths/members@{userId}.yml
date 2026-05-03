@@ -1,0 +1,84 @@
+put:
+  tags:
+    - members
+  summary: Update member role
+  description: Update a member's tenant role. Admin or owner only.
+  operationId: updateMember
+  security:
+    - bearer_auth: []
+  parameters:
+    - $ref: "../api.yml#/components/parameters/TenantId"
+    - name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../schemas/index.yml#/MemberUpdate"
+  responses:
+    '200':
+      description: Member updated
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Member"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '404':
+      description: Member not found
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+delete:
+  tags:
+    - members
+  summary: Remove member
+  description: Remove a member from the tenant. Admin or owner only.
+  operationId: removeMember
+  security:
+    - bearer_auth: []
+  parameters:
+    - $ref: "../api.yml#/components/parameters/TenantId"
+    - name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '204':
+      description: Member removed
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '404':
+      description: Member not found
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"

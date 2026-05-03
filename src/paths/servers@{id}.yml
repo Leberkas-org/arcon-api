@@ -1,0 +1,124 @@
+get:
+  tags:
+    - servers
+  summary: Get server details
+  operationId: getServer
+  security:
+    - bearer_auth: []
+  parameters:
+    - $ref: "../api.yml#/components/parameters/TenantId"
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: Server details
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Server"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '404':
+      description: Server not found
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+put:
+  tags:
+    - servers
+  summary: Update server
+  description: Update server details. Admin or owner only. Does not update the RCON password (use PUT /servers/{id}/password).
+  operationId: updateServer
+  security:
+    - bearer_auth: []
+  parameters:
+    - $ref: "../api.yml#/components/parameters/TenantId"
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../schemas/index.yml#/ServerUpdate"
+  responses:
+    '200':
+      description: Server updated
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Server"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '404':
+      description: Server not found
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+delete:
+  tags:
+    - servers
+  summary: Delete server
+  description: Remove a server from the tenant. Admin or owner only.
+  operationId: deleteServer
+  security:
+    - bearer_auth: []
+  parameters:
+    - $ref: "../api.yml#/components/parameters/TenantId"
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '204':
+      description: Server deleted
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '404':
+      description: Server not found
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"

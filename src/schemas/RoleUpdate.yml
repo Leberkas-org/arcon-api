@@ -1,0 +1,12 @@
+type: object
+properties:
+  name:
+    type: string
+    example: "Moderator"
+  description:
+    type: string
+  permissions:
+    type: array
+    items:
+      $ref: "index.yml#/PermissionRule"
+    description: Ordered list of permission rules. First match wins.

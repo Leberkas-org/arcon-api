@@ -1,0 +1,36 @@
+type: object
+required:
+  - code
+  - tenantId
+  - role
+  - invitedBy
+  - createdAt
+  - expiresAt
+properties:
+  code:
+    type: string
+    description: Unique invite code
+    example: "abc123def456"
+  tenantId:
+    type: string
+    format: uuid
+  email:
+    type: string
+    format: email
+    nullable: true
+    description: If set, only this email can accept
+  role:
+    type: string
+    enum:
+      - admin
+      - member
+  invitedBy:
+    type: string
+    format: uuid
+    description: User ID of the person who created the invite
+  createdAt:
+    type: string
+    format: date-time
+  expiresAt:
+    type: string
+    format: date-time

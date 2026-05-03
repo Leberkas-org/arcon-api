@@ -1,0 +1,30 @@
+get:
+  tags:
+    - members
+  summary: List tenant members
+  operationId: listMembers
+  security:
+    - bearer_auth: []
+  parameters:
+    - $ref: "../api.yml#/components/parameters/TenantId"
+  responses:
+    '200':
+      description: List of members
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../schemas/index.yml#/Member"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Not a member of this tenant
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"

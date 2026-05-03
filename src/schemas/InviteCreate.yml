@@ -1,0 +1,14 @@
+type: object
+required:
+  - role
+properties:
+  email:
+    type: string
+    format: email
+    description: If set, only this email can accept the invite. Omit for an open invite link.
+  role:
+    type: string
+    enum:
+      - admin
+      - member
+    description: Tenant role the invitee will receive upon accepting

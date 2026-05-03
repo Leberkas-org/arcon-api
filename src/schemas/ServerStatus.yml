@@ -1,0 +1,14 @@
+type: object
+required:
+  - reachable
+  - checkedAt
+properties:
+  reachable:
+    type: boolean
+  latencyMs:
+    type: number
+    description: Round-trip latency in milliseconds. Only present when reachable is true.
+    example: 23.5
+  checkedAt:
+    type: string
+    format: date-time

@@ -1,0 +1,47 @@
+type: object
+required:
+  - id
+  - tenantId
+  - userId
+  - action
+  - detail
+  - timestamp
+properties:
+  id:
+    type: string
+    format: uuid
+  tenantId:
+    type: string
+    format: uuid
+  serverId:
+    type: string
+    format: uuid
+    nullable: true
+    description: Null for non-server actions (e.g., role changes, member management)
+  userId:
+    type: string
+    format: uuid
+    description: User who performed the action
+  action:
+    type: string
+    enum:
+      - command.executed
+      - command.replayed
+      - server.created
+      - server.updated
+      - server.deleted
+      - role.created
+      - role.updated
+      - role.deleted
+      - member.invited
+      - member.removed
+      - member.updated
+      - permission.updated
+      - favourite.shared
+    description: Type of audited action
+  detail:
+    type: object
+    description: Action-specific payload (e.g., which command was run, what permission changed)
+  timestamp:
+    type: string
+    format: date-time

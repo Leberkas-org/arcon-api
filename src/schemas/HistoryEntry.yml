@@ -1,0 +1,36 @@
+type: object
+required:
+  - id
+  - command
+  - executedBy
+  - executedAt
+  - executionTimeMs
+  - success
+  - raw
+properties:
+  id:
+    type: string
+    format: uuid
+  command:
+    type: string
+    example: "kick"
+  args:
+    type: array
+    items:
+      type: string
+    example: ["PlayerName", "AFK too long"]
+  executedBy:
+    type: string
+    format: uuid
+    description: User ID of the person who executed the command
+  executedAt:
+    type: string
+    format: date-time
+  executionTimeMs:
+    type: number
+    example: 45.2
+  success:
+    type: boolean
+  raw:
+    type: string
+    description: The RCON response

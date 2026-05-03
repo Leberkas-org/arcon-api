@@ -1,0 +1,28 @@
+type: object
+required:
+  - id
+  - name
+  - permissions
+  - createdAt
+  - updatedAt
+properties:
+  id:
+    type: string
+    format: uuid
+  name:
+    type: string
+    example: "Moderator"
+  description:
+    type: string
+    example: "Can manage players but not server settings"
+  permissions:
+    type: array
+    items:
+      $ref: "index.yml#/PermissionRule"
+    description: Ordered list of permission rules. First match wins.
+  createdAt:
+    type: string
+    format: date-time
+  updatedAt:
+    type: string
+    format: date-time

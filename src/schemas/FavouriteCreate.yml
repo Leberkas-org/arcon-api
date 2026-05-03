@@ -1,0 +1,20 @@
+type: object
+required:
+  - command
+properties:
+  name:
+    type: string
+    example: "Restart warning sequence"
+  command:
+    type: string
+    example: "servermsg"
+  args:
+    type: array
+    items:
+      type: string
+    example: ["Server restarting in 5 minutes"]
+  shares:
+    type: array
+    items:
+      $ref: "index.yml#/ShareEntry"
+    description: Share entries. Omit for a private favourite.

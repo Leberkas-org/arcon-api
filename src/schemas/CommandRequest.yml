@@ -1,0 +1,14 @@
+type: object
+required:
+  - command
+properties:
+  command:
+    type: string
+    description: Command name
+    example: "kick"
+  args:
+    type: array
+    items:
+      type: string
+    description: Command arguments
+    example: ["PlayerName", "AFK too long"]

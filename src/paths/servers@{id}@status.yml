@@ -1,0 +1,41 @@
+get:
+  tags:
+    - servers
+  summary: Check server status
+  description: Test if ARCON can reach the RCON server.
+  operationId: getServerStatus
+  security:
+    - bearer_auth: []
+  parameters:
+    - $ref: "../api.yml#/components/parameters/TenantId"
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: Server status
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/ServerStatus"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '404':
+      description: Server not found
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"

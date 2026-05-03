@@ -1,0 +1,92 @@
+get:
+  tags:
+    - permissions
+  summary: Get server permissions
+  description: Get role assignments and user overrides for a server. Admin or owner only.
+  operationId: getServerPermissions
+  security:
+    - bearer_auth: []
+  parameters:
+    - $ref: "../api.yml#/components/parameters/TenantId"
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: Server permissions
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/ServerPermissions"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '404':
+      description: Server not found
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+put:
+  tags:
+    - permissions
+  summary: Set server permissions
+  description: |
+    Set role assignments and user overrides for a server. Admin or owner only.
+    This replaces the entire permission configuration for the server.
+
+    **Resolution order**: user override > role permissions > deny by default.
+  operationId: setServerPermissions
+  security:
+    - bearer_auth: []
+  parameters:
+    - $ref: "../api.yml#/components/parameters/TenantId"
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../schemas/index.yml#/ServerPermissions"
+  responses:
+    '200':
+      description: Permissions updated
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/ServerPermissions"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '404':
+      description: Server not found
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"

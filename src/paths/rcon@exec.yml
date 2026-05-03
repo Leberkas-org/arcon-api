@@ -1,0 +1,71 @@
+post:
+  tags:
+    - rcon
+  summary: Quick connect - execute command
+  description: |
+    Execute an RCON command directly by providing connection details.
+    No server registration or command permissions required.
+    Requires authentication. Rate-limited per user.
+  operationId: quickConnectExec
+  security:
+    - bearer_auth: []
+  parameters:
+    - name: hostname
+      in: query
+      description: Hostname of the RCON server
+      required: true
+      schema:
+        type: string
+        example: "rcon.example.org"
+    - name: port
+      in: query
+      description: Port for the RCON server
+      required: true
+      schema:
+        type: integer
+        example: 27020
+    - name: password
+      in: query
+      description: Password for the RCON server
+      required: true
+      schema:
+        type: string
+        format: password
+  requestBody:
+    description: Plain text RCON command
+    required: true
+    content:
+      text/plain:
+        schema:
+          type: string
+        example: ListPlayers
+  responses:
+    '200':
+      description: Command executed
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/QuickConnectResponse"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '429':
+      description: Rate limit exceeded
+      headers:
+        Retry-After:
+          description: Seconds until the rate limit resets
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '502':
+      description: Failed to connect to the RCON server
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"

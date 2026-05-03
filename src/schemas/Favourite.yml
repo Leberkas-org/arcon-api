@@ -1,0 +1,42 @@
+type: object
+required:
+  - id
+  - command
+  - serverId
+  - tenantId
+  - createdBy
+  - createdAt
+  - shares
+properties:
+  id:
+    type: string
+    format: uuid
+  name:
+    type: string
+    description: Optional custom label
+    example: "Restart warning sequence"
+  command:
+    type: string
+    example: "servermsg"
+  args:
+    type: array
+    items:
+      type: string
+    example: ["Server restarting in 5 minutes"]
+  serverId:
+    type: string
+    format: uuid
+  tenantId:
+    type: string
+    format: uuid
+  createdBy:
+    type: string
+    format: uuid
+  createdAt:
+    type: string
+    format: date-time
+  shares:
+    type: array
+    items:
+      $ref: "index.yml#/ShareEntry"
+    description: Defines who can see and use this favourite. Empty array means private.

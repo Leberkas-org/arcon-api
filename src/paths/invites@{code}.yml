@@ -1,0 +1,26 @@
+get:
+  tags:
+    - invites
+  summary: Get invite details
+  description: View invite details before accepting. No authentication required. Returns 404 if the code is invalid or expired.
+  operationId: getInviteDetails
+  security: []
+  parameters:
+    - name: code
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Invite details
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/InviteDetails"
+    '404':
+      description: Invite not found or expired
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"

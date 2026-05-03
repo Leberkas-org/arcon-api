@@ -1,0 +1,125 @@
+get:
+  tags:
+    - roles
+  summary: Get role details
+  description: Get a role including its command permission rules.
+  operationId: getRole
+  security:
+    - bearer_auth: []
+  parameters:
+    - $ref: "../api.yml#/components/parameters/TenantId"
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: Role details
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Role"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '404':
+      description: Role not found
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+put:
+  tags:
+    - roles
+  summary: Update role
+  description: Update role name, description, or permissions. Admin or owner only.
+  operationId: updateRole
+  security:
+    - bearer_auth: []
+  parameters:
+    - $ref: "../api.yml#/components/parameters/TenantId"
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../schemas/index.yml#/RoleUpdate"
+  responses:
+    '200':
+      description: Role updated
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Role"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '404':
+      description: Role not found
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+delete:
+  tags:
+    - roles
+  summary: Delete role
+  description: Delete a role. Admin or owner only. Users assigned this role on servers will lose those permissions.
+  operationId: deleteRole
+  security:
+    - bearer_auth: []
+  parameters:
+    - $ref: "../api.yml#/components/parameters/TenantId"
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '204':
+      description: Role deleted
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '404':
+      description: Role not found
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"

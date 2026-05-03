@@ -1,0 +1,11 @@
+type: object
+required:
+  - userId
+  - roleId
+properties:
+  userId:
+    type: string
+    format: uuid
+  roleId:
+    type: string
+    format: uuid

@@ -1,51 +1,131 @@
-openapi: 3.1.1
+openapi: 3.0.3
 info:
   title: ARCON
   description: |-
-    This is an API to interact with RCON servers.
+    ARCON is a multi-tenant REST API for executing RCON commands on game servers.
+
+    ## Modes of Operation
+
+    - **Quick Connect**: Authenticated users provide connection details directly and send RCON commands. No server registration, no permission checks, rate-limited.
+    - **Managed Mode**: Servers are registered within a tenant. Users are assigned roles with fine-grained per-command permissions. Full audit logging, command history, favourites, and real-time WebSocket support.
+
+    ## Authentication
+
+    All endpoints require a Bearer JWT token issued by an external Identity Provider.
+    Tenant-scoped endpoints additionally require the `X-Tenant-Id` header.
   contact:
     email: arcon@leberkas.org
-  version: "1.0"
+  version: "2.0"
 servers:
-  - url: https://arcon.leberkas.org/api/v1
+  - url: https://arcon.leberkas.org/api/v2
+  - url: api/v2
 tags:
-  - name: raw
-    description: Raw requests to specified server, without any session handling
+  - name: profile
+    description: Current user profile and memberships
+  - name: tenants
+    description: Tenant management
+  - name: members
+    description: Tenant member management
+  - name: invites
+    description: Tenant invite system
+  - name: catalogs
+    description: Command catalog management (global and tenant-scoped)
+  - name: servers
+    description: Game server registration and management
+  - name: roles
+    description: Role and permission management
+  - name: permissions
+    description: Per-server permission assignments
+  - name: execution
+    description: RCON command execution on managed servers
+  - name: history
+    description: Command execution history
+  - name: favourites
+    description: Saved command templates
+  - name: audit
+    description: Audit logging
+  - name: rcon
+    description: Quick connect RCON execution
+  - name: websocket
+    description: Real-time WebSocket command channel
 paths:
+  /me:
+    $ref: "./paths/me.yml"
+  /tenants:
+    $ref: "./paths/tenants.yml"
+  /tenants/{id}:
+    $ref: "./paths/tenants@{id}.yml"
+  /tenants/{id}/catalogs:
+    $ref: "./paths/tenants@{id}@catalogs.yml"
+  /tenants/{id}/catalogs/{slug}:
+    $ref: "./paths/tenants@{id}@catalogs@{slug}.yml"
+  /members:
+    $ref: "./paths/members.yml"
+  /members/{userId}:
+    $ref: "./paths/members@{userId}.yml"
+  /members/invite:
+    $ref: "./paths/members@invite.yml"
+  /members/invites:
+    $ref: "./paths/members@invites.yml"
+  /members/invites/{code}:
+    $ref: "./paths/members@invites@{code}.yml"
+  /invites/{code}:
+    $ref: "./paths/invites@{code}.yml"
+  /invites/{code}/accept:
+    $ref: "./paths/invites@{code}@accept.yml"
+  /catalogs:
+    $ref: "./paths/catalogs.yml"
+  /catalogs/{slug}:
+    $ref: "./paths/catalogs@{slug}.yml"
+  /roles:
+    $ref: "./paths/roles.yml"
+  /roles/{id}:
+    $ref: "./paths/roles@{id}.yml"
+  /servers:
+    $ref: "./paths/servers.yml"
+  /servers/{id}:
+    $ref: "./paths/servers@{id}.yml"
+  /servers/{id}/password:
+    $ref: "./paths/servers@{id}@password.yml"
+  /servers/{id}/status:
+    $ref: "./paths/servers@{id}@status.yml"
+  /servers/{id}/permissions:
+    $ref: "./paths/servers@{id}@permissions.yml"
+  /servers/{id}/exec:
+    $ref: "./paths/servers@{id}@exec.yml"
+  /servers/{id}/history:
+    $ref: "./paths/servers@{id}@history.yml"
+  /servers/{id}/history/{entryId}/replay:
+    $ref: "./paths/servers@{id}@history@{entryId}@replay.yml"
+  /servers/{id}/favourites:
+    $ref: "./paths/servers@{id}@favourites.yml"
+  /servers/{id}/favourites/{favId}:
+    $ref: "./paths/servers@{id}@favourites@{favId}.yml"
+  /audit:
+    $ref: "./paths/audit.yml"
+  /servers/{id}/audit:
+    $ref: "./paths/servers@{id}@audit.yml"
   /rcon/exec:
-    post:
-      tags:
-        - raw
-      summary: Execute a command
-      operationId: execRcon
-      requestBody:
-        description: your plain text RCON command
-        required: true
-        content:
-          text/plain:
-            schema:
-              type: string
-            example: ListPlayers
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            text/plain:
-              schema:
-                type: string
-        '204':
-          description: No content - Successful operation
-        '401':
-          description: Unauthorized
-        '403':
-          description: Bad request - Command invalid
+    $ref: "./paths/rcon@exec.yml"
+  /ws/servers/{id}:
+    $ref: "./paths/ws@servers@{id}.yml"
 components:
+  schemas:
+    $ref: "./schemas/index.yml"
   securitySchemes:
-    arcon_auth:
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: https://auth.leberkas.org/oauth/authorize
-          scopes:
-            "write:arcon_command": executes rcon commands
-            "write:arcon_sessions": manage rcon sessions
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token issued by an external Identity Provider (Keycloak, Auth0, etc.)
+  parameters:
+    TenantId:
+      name: X-Tenant-Id
+      in: header
+      description: ID of the tenant to operate within. Required for all tenant-scoped endpoints.
+      required: true
+      schema:
+        type: string
+        format: uuid
+security:
+  - bearer_auth: []

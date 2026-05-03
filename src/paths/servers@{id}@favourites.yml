@@ -1,0 +1,90 @@
+get:
+  tags:
+    - favourites
+  summary: List favourites
+  description: List favourites visible to the current user on this server (personal + shared via roles/server/tenant).
+  operationId: listFavourites
+  security:
+    - bearer_auth: []
+  parameters:
+    - $ref: "../api.yml#/components/parameters/TenantId"
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: List of favourites
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../schemas/index.yml#/Favourite"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '404':
+      description: Server not found
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+post:
+  tags:
+    - favourites
+  summary: Create a favourite
+  description: Save a command as a favourite on this server. Private by default, add share entries to share.
+  operationId: createFavourite
+  security:
+    - bearer_auth: []
+  parameters:
+    - $ref: "../api.yml#/components/parameters/TenantId"
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../schemas/index.yml#/FavouriteCreate"
+  responses:
+    '201':
+      description: Favourite created
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Favourite"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '404':
+      description: Server not found
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"

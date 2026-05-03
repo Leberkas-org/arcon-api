@@ -1,0 +1,158 @@
+get:
+  tags:
+    - catalogs
+  summary: Get a tenant catalog
+  description: Get a tenant-scoped command catalog by slug.
+  operationId: getTenantCatalog
+  security:
+    - bearer_auth: []
+  parameters:
+    - name: id
+      in: path
+      description: Tenant ID
+      required: true
+      schema:
+        type: string
+        format: uuid
+    - name: slug
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Catalog details
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Catalog"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Not a member of this tenant
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '404':
+      description: Catalog not found
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+put:
+  tags:
+    - catalogs
+  summary: Update a tenant catalog
+  description: |
+    Update a tenant-scoped command catalog. Admin or owner only.
+    If a new file is included, validation is triggered asynchronously (returns 202).
+    If only metadata is updated, returns 200.
+  operationId: updateTenantCatalog
+  security:
+    - bearer_auth: []
+  parameters:
+    - name: id
+      in: path
+      description: Tenant ID
+      required: true
+      schema:
+        type: string
+        format: uuid
+    - name: slug
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBody:
+    required: true
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+            description:
+              type: string
+            file:
+              type: string
+              format: binary
+              description: New command catalog YAML file. Triggers re-validation.
+  responses:
+    '200':
+      description: Metadata updated (no new file)
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Catalog"
+    '202':
+      description: New file uploaded, validation in progress
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Catalog"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '404':
+      description: Catalog not found
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+delete:
+  tags:
+    - catalogs
+  summary: Delete a tenant catalog
+  description: Delete a tenant-scoped command catalog. Admin or owner only.
+  operationId: deleteTenantCatalog
+  security:
+    - bearer_auth: []
+  parameters:
+    - name: id
+      in: path
+      description: Tenant ID
+      required: true
+      schema:
+        type: string
+        format: uuid
+    - name: slug
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    '204':
+      description: Catalog deleted
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '404':
+      description: Catalog not found
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"

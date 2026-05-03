@@ -1,0 +1,21 @@
+get:
+  tags:
+    - profile
+  summary: Get current user profile
+  description: Returns the authenticated user's profile, including all tenant memberships and roles.
+  operationId: getProfile
+  security:
+    - bearer_auth: []
+  responses:
+    '200':
+      description: User profile
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/UserProfile"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"

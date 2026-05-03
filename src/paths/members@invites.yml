@@ -1,0 +1,31 @@
+get:
+  tags:
+    - members
+  summary: List pending invites
+  description: List all pending invites for the tenant. Admin or owner only.
+  operationId: listInvites
+  security:
+    - bearer_auth: []
+  parameters:
+    - $ref: "../api.yml#/components/parameters/TenantId"
+  responses:
+    '200':
+      description: List of pending invites
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../schemas/index.yml#/Invite"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"

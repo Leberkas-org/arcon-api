@@ -1,0 +1,121 @@
+get:
+  tags:
+    - tenants
+  summary: Get tenant details
+  operationId: getTenant
+  security:
+    - bearer_auth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: Tenant details
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Tenant"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Not a member of this tenant
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '404':
+      description: Tenant not found
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+put:
+  tags:
+    - tenants
+  summary: Update tenant
+  description: Update tenant details. Owner or admin only. Only the owner can transfer ownership via ownerId.
+  operationId: updateTenant
+  security:
+    - bearer_auth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../schemas/index.yml#/TenantUpdate"
+  responses:
+    '200':
+      description: Tenant updated
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Tenant"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '404':
+      description: Tenant not found
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+delete:
+  tags:
+    - tenants
+  summary: Delete tenant
+  description: Delete a tenant and all associated data. Owner only.
+  operationId: deleteTenant
+  security:
+    - bearer_auth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '204':
+      description: Tenant deleted
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Only the owner can delete a tenant
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '404':
+      description: Tenant not found
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"

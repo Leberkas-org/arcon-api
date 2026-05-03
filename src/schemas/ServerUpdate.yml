@@ -1,0 +1,30 @@
+type: object
+properties:
+  name:
+    type: string
+    example: "PZ EU #1"
+  description:
+    type: string
+  hostname:
+    type: string
+    example: "rcon.example.org"
+  port:
+    type: integer
+    example: 27020
+  commandCatalog:
+    type: string
+    nullable: true
+    description: Reference to a command catalog. Set to null to remove.
+  tags:
+    type: array
+    items:
+      type: string
+  icon:
+    type: string
+    nullable: true
+  color:
+    type: string
+    nullable: true
+  connectionTimeout:
+    type: integer
+    nullable: true

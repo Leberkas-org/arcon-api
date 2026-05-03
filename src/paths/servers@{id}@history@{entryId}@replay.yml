@@ -1,0 +1,53 @@
+post:
+  tags:
+    - history
+  summary: Replay a command
+  description: Re-execute a command from history. The same permission checks apply as for a fresh execution.
+  operationId: replayCommand
+  security:
+    - bearer_auth: []
+  parameters:
+    - $ref: "../api.yml#/components/parameters/TenantId"
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    - name: entryId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: Command replayed
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/CommandResponse"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: No permission to execute this command
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '404':
+      description: Server or history entry not found
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '502':
+      description: Failed to connect to the RCON server
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"

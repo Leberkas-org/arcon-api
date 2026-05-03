@@ -1,0 +1,13 @@
+type: object
+required:
+  - userId
+  - permissions
+properties:
+  userId:
+    type: string
+    format: uuid
+  permissions:
+    type: array
+    items:
+      $ref: "index.yml#/PermissionRule"
+    description: Override permission rules for this user. Takes precedence over role permissions.

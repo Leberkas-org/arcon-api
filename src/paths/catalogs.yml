@@ -1,0 +1,82 @@
+get:
+  tags:
+    - catalogs
+  summary: List global catalogs
+  description: List all globally available command catalogs.
+  operationId: listGlobalCatalogs
+  security:
+    - bearer_auth: []
+  responses:
+    '200':
+      description: List of global catalogs
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../schemas/index.yml#/Catalog"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+post:
+  tags:
+    - catalogs
+  summary: Create a global catalog
+  description: |
+    Upload a command catalog YAML file with metadata. Platform admin only.
+    Returns 202 Accepted. The catalog is validated asynchronously.
+    Poll GET /catalogs/{slug} to check the validation status.
+  operationId: createGlobalCatalog
+  security:
+    - bearer_auth: []
+  requestBody:
+    required: true
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          required:
+            - slug
+            - name
+            - file
+          properties:
+            slug:
+              type: string
+              description: Unique identifier for the catalog
+              pattern: "^[a-z0-9][a-z0-9-]*$"
+            name:
+              type: string
+            description:
+              type: string
+            file:
+              type: string
+              format: binary
+              description: Command catalog YAML file
+  responses:
+    '202':
+      description: Upload accepted, validation in progress
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Catalog"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Platform admin required
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '409':
+      description: Catalog with this slug already exists
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"

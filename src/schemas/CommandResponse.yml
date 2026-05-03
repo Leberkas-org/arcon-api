@@ -1,0 +1,31 @@
+type: object
+required:
+  - success
+  - raw
+  - command
+  - server
+  - executedAt
+  - executionTimeMs
+properties:
+  success:
+    type: boolean
+  raw:
+    type: string
+    description: Raw RCON response string
+  command:
+    type: string
+    description: The command that was executed
+    example: "kick"
+  variant:
+    type: string
+    nullable: true
+    description: Which command signature matched, if the command catalog defines overloads
+  server:
+    $ref: "index.yml#/ServerRef"
+  executedAt:
+    type: string
+    format: date-time
+  executionTimeMs:
+    type: number
+    description: Execution time in milliseconds
+    example: 45.2

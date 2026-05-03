@@ -1,0 +1,66 @@
+get:
+  tags:
+    - servers
+  summary: List servers
+  description: List servers in the tenant. Members see only servers they have permissions for.
+  operationId: listServers
+  security:
+    - bearer_auth: []
+  parameters:
+    - $ref: "../api.yml#/components/parameters/TenantId"
+  responses:
+    '200':
+      description: List of servers
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../schemas/index.yml#/Server"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Not a member of this tenant
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+post:
+  tags:
+    - servers
+  summary: Register a server
+  description: Register a new game server in the tenant. Admin or owner only.
+  operationId: createServer
+  security:
+    - bearer_auth: []
+  parameters:
+    - $ref: "../api.yml#/components/parameters/TenantId"
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../schemas/index.yml#/ServerCreate"
+  responses:
+    '201':
+      description: Server registered
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Server"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"

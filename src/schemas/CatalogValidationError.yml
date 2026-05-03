@@ -1,0 +1,12 @@
+type: object
+required:
+  - message
+properties:
+  path:
+    type: string
+    description: YAML path to the invalid element
+    example: "commands.teleport.variants[1].params[0]"
+  message:
+    type: string
+    description: Human-readable error description
+    example: "Parameter 'target' is missing required field 'type'"

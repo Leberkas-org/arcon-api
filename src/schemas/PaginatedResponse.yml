@@ -1,0 +1,18 @@
+type: object
+required:
+  - total
+  - page
+  - pageSize
+properties:
+  total:
+    type: integer
+    description: Total number of items across all pages
+    example: 42
+  page:
+    type: integer
+    description: Current page number (1-based)
+    example: 1
+  pageSize:
+    type: integer
+    description: Number of items per page
+    example: 20

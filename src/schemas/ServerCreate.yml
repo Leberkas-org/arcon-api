@@ -1,0 +1,40 @@
+type: object
+required:
+  - name
+  - hostname
+  - port
+  - password
+properties:
+  name:
+    type: string
+    example: "PZ EU #1"
+  description:
+    type: string
+  hostname:
+    type: string
+    example: "rcon.example.org"
+  port:
+    type: integer
+    example: 27020
+  password:
+    type: string
+    format: password
+    description: RCON password. Write-only, will never be returned in responses.
+  commandCatalog:
+    type: string
+    description: |
+      Reference to a command catalog. Can be a global path, tenant path, or external URL.
+    example: "/catalogs/project-zomboid"
+  tags:
+    type: array
+    items:
+      type: string
+    example: ["eu", "modded", "pve"]
+  icon:
+    type: string
+  color:
+    type: string
+    example: "#4CAF50"
+  connectionTimeout:
+    type: integer
+    description: Connection timeout in milliseconds

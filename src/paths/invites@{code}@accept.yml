@@ -1,0 +1,39 @@
+post:
+  tags:
+    - invites
+  summary: Accept invite
+  description: Accept an invite and join the tenant. Requires authentication but no X-Tenant-Id header.
+  operationId: acceptInvite
+  security:
+    - bearer_auth: []
+  parameters:
+    - name: code
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Invite accepted, user is now a member
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Member"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '404':
+      description: Invite not found or expired
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '409':
+      description: User is already a member of this tenant
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"

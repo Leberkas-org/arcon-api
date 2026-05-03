@@ -1,0 +1,64 @@
+get:
+  tags:
+    - websocket
+  summary: WebSocket command channel
+  description: |
+    Upgrade to a WebSocket connection for real-time command execution.
+
+    Authentication and tenant are provided via query parameters because the
+    WebSocket handshake does not support custom headers in browsers.
+
+    ## Client-to-Server Messages (JSON)
+
+    - `{"type": "exec", "command": "...", "args": [...]}` - Execute a command
+    - `{"type": "ping"}` - Keep-alive
+
+    ## Server-to-Client Messages (JSON)
+
+    - `{"type": "result", "success": true, "raw": "...", "command": "...", "executionTimeMs": ...}` - Command result
+    - `{"type": "error", "code": "...", "message": "..."}` - Error
+    - `{"type": "pong"}` - Keep-alive response
+
+    Permission checks apply to every exec message. Commands are written to history and audit log.
+  operationId: websocketConnect
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    - name: token
+      in: query
+      description: JWT token for authentication
+      required: true
+      schema:
+        type: string
+    - name: tenant
+      in: query
+      description: Tenant ID
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '101':
+      description: Switching Protocols - WebSocket connection established
+    '401':
+      description: Invalid or expired token
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '403':
+      description: No access to this server
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"
+    '404':
+      description: Server not found
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/index.yml#/Error"

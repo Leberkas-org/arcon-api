@@ -1,0 +1,19 @@
+type: object
+required:
+  - success
+  - raw
+  - executedAt
+  - executionTimeMs
+properties:
+  success:
+    type: boolean
+  raw:
+    type: string
+    description: Raw RCON response string
+  executedAt:
+    type: string
+    format: date-time
+  executionTimeMs:
+    type: number
+    description: Execution time in milliseconds
+    example: 45.2

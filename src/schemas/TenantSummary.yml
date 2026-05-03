@@ -1,0 +1,19 @@
+type: object
+required:
+  - id
+  - name
+  - role
+properties:
+  id:
+    type: string
+    format: uuid
+  name:
+    type: string
+    example: "Leberkas Gaming"
+  role:
+    type: string
+    enum:
+      - owner
+      - admin
+      - member
+    description: The current user's role in this tenant
